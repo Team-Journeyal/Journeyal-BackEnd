@@ -4,8 +4,8 @@ import random
 from django.core.management.base import BaseCommand
 
 # Change this to reflect your app's name and name of your custom User model
-from journeyal.models import User
-from journeyal import settings  # Change this to reflect your app's name
+from Journeyal.models import User
+from Journeyal import settings  # Change this to reflect your app's name
 
 
 # To run this management command:
