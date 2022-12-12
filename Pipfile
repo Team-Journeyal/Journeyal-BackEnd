@@ -11,6 +11,7 @@ psycopg2-binary = "*"
 django-environ = "*"
 whitenoise = "*"
 gunicorn = "*"
+djoser = "*"
 
 [dev-packages]
 flake8 = "*"
