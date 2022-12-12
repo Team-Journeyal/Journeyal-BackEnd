@@ -12,6 +12,7 @@ django-environ = "*"
 whitenoise = "*"
 gunicorn = "*"
 djoser = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 flake8 = "*"
