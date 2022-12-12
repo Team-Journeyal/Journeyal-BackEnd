@@ -6,4 +6,4 @@ pipenv install
 
 pipenv run python manage.py migrate
 pipenv run python manage.py collectstatic --no-input
-pipenv run python manage.py createsuperuser
+pipenv run python manage.py add_superuser
