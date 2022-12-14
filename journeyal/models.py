@@ -8,7 +8,7 @@ class User(AbstractUser):
     # avatar = models.ImageField(upload_to="user_avatars", blank=True, null=True)
 
     def __str__(self):
-        return self.username
+        return self.name
 
 
 class Calendar(models.Model):
