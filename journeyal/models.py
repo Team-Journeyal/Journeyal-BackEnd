@@ -8,7 +8,7 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to="user_avatars", blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class Calendar(models.Model):
@@ -16,7 +16,7 @@ class Calendar(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Journal(models.Model):
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE, related_name='journals')
