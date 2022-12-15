@@ -1,5 +1,7 @@
 from django.urls import path
+from django.conf import settings
 from . import views
+from django.conf.urls.static import static
 
 urlpatterns = [
 
@@ -9,5 +11,8 @@ urlpatterns = [
     path('calendar/<int:pk>/', views.CalendarDetail.as_view(), name='calendar-detail'),
     path('journal/', views.JournalView.as_view(), name='journal'),
     path('journal/<int:pk>/', views.JournalDetail.as_view(), name='journal-detail'),
-
+    path("auth/users/me/avatar/", views.UserAvatarView.as_view(), name='user_avatar'),
 ]
+
+if settings.DEBUG: 
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

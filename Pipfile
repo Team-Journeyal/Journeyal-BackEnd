@@ -13,6 +13,9 @@ whitenoise = "*"
 gunicorn = "*"
 djoser = "*"
 django-cors-headers = "*"
+boto3 = "*"
+django-storages = "*"
+pillow = "*"
 
 [dev-packages]
 flake8 = "*"

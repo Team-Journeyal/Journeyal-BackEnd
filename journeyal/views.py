@@ -1,6 +1,7 @@
-from rest_framework import generics
+from rest_framework import generics, parsers
 from .models import User, Calendar, Journal
 from .serializers import UserSerializer, CalendarSerializer, JournalSerializer
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class UserView(generics.ListCreateAPIView):
@@ -38,3 +39,12 @@ class JournalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
     permission_classes = []
+
+class UserAvatarView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    parser_classes = [parsers.FileUploadParser]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
