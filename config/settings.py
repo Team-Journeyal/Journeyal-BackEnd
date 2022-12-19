@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'storages',
     'djoser',
     'journeyal',
+    'taggit',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -167,6 +169,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -195,3 +199,5 @@ if env('USE_S3'):
     AWS_QUERYSTRING_AUTH = False
 # This is for django-storages with boto3
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+TAGGIT_CASE_INSENSITIVE = True

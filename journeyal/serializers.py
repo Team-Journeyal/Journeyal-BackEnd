@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import User, Calendar, Journal, Notification, Follow
+from .models import User, Calendar, Journal, Notification, Follow, TaggableManager
+from taggit.serializers import (TagListSerializerField, TaggitSerializer)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,7 +23,9 @@ class CalendarSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class JournalSerializer(serializers.ModelSerializer):
+class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'entry', 'event', 'calendar')
+        fields = ('id', 'date', 'entry', 'event', 'calendar', 'tags')
