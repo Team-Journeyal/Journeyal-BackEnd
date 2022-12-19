@@ -15,14 +15,14 @@ class UserSerializer(serializers.ModelSerializer):
         # this call to super is to make sure that update still works for other fields
         return super().update(instance, validated_data)
 
-
-class CalendarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Calendar
-        fields = ('id', 'name')
-
-
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal
         fields = ('id', 'date', 'entry', 'event', 'calendar')
+
+class CalendarSerializer(serializers.ModelSerializer):
+    journals = JournalSerializer(many=True, read_only=True)
+    class Meta:
+        model = Calendar
+        fields = ('id', 'name', 'journals')
+
