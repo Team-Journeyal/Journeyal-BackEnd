@@ -24,8 +24,31 @@ class CalendarSerializer(serializers.ModelSerializer):
 
 
 class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
+    journals = JournalSerializer(many=True, read_only=True)
     tags = TagListSerializerField()
 
     class Meta:
         model = Journal
         fields = ('id', 'date', 'entry', 'event', 'calendar', 'tags')
+
+
+class JournalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Journal
+        fields = ('id', 'date', 'entry', 'event', 'calendar', 'tags')
+
+
+class CalendarSerializer(serializers.ModelSerializer):
+    journals = JournalSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Calendar
+        fields = ('id', 'name', 'journals')
+
+
+class CalendarSerializer(serializers.ModelSerializer):
+    journals = JournalSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Calendar
+        fields = ('id', 'name', 'journals')
