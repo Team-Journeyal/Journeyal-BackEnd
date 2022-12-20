@@ -16,6 +16,8 @@ django-cors-headers = "*"
 boto3 = "*"
 django-storages = "*"
 pillow = "*"
+django-taggit = "*"
+django-filter = "*"
 
 [dev-packages]
 flake8 = "*"

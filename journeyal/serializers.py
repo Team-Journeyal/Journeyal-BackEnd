@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User, Calendar, Journal, Notification, Follow
+from taggit.serializers import (TagListSerializerField, TaggitSerializer)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,16 +29,21 @@ class UserSerializer(serializers.ModelSerializer):
 #     #         return instance
 #     #     return super().update(instance, validated_data)
 
-class JournalSerializer(serializers.ModelSerializer):
+
+class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'entry', 'event', 'calendar')
+        fields = ('id', 'date', 'entry', 'event', 'calendar', 'tags')
+
 
 class CalendarSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
+
     class Meta:
         model = Calendar
-        fields = ('id', 'name', 'cal_image', 'journals')
+        fields = ('id', 'name', 'journals')
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
