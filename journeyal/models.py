@@ -16,6 +16,8 @@ class Calendar(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='calendars')
     name = models.CharField(max_length=50)
+    cal_image = models.ImageField(
+        upload_to="cal_covers", blank=True, null=True)
 
     def __str__(self):
         return str(self.name)
@@ -29,7 +31,7 @@ class Journal(models.Model):
     event = models.CharField(max_length=200, null=True, blank=True)
 
     # image = models.ImageField(null=True, blank=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 # stickers =
 
 
@@ -43,3 +45,8 @@ class Notification(models.Model):
 
 class Follow(models.Model):
     pass
+
+
+# class Image(models.Model):
+#     journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='images')
+#     journal_image = models.ImageField(upload_to="journal_images", blank=True, null=True)

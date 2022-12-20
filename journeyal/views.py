@@ -43,6 +43,9 @@ class JournalView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['tags__name']
 
+    def save(self, commit=True):
+        instance = Journal.objects.tags
+
 
 class JournalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Journal.objects.all()
@@ -58,3 +61,16 @@ class UserAvatarView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class CalCoverImageView(generics.UpdateAPIView):
+    queryset = Calendar.objects.all()
+    serializer_class = CalendarSerializer
+    parser_classes = [parsers.FileUploadParser]
+    permission_classes = [IsAuthenticated]
+
+# class JournalImageView(generics.UpdateAPIView):
+#     queryset = Image.objects.all()
+#     serializer_class = ImageSerializer
+#     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
+#     permission_classes = [IsAuthenticated]

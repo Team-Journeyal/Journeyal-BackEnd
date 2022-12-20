@@ -16,11 +16,18 @@ class UserSerializer(serializers.ModelSerializer):
         # this call to super is to make sure that update still works for other fields
         return super().update(instance, validated_data)
 
+# class ImageSerializer(serializers.ModelSerializer):
+#     journal = serializers.PrimaryKeyRelatedField(read_only=True)
+#     class Meta:
+#         model = Image
+#         fields = ('journal', 'journal_image')
 
-class CalendarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Calendar
-        fields = ('id', 'name')
+#     # def update(self, instance, validated_data):
+#     #     if "file" in self.initial_data:
+#     #         file = self.initial_data.get("file")
+#     #         instance.journal_image.save(file.name, file, save=True)
+#     #         return instance
+#     #     return super().update(instance, validated_data)
 
 
 class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -38,10 +45,9 @@ class CalendarSerializer(serializers.ModelSerializer):
         model = Calendar
         fields = ('id', 'name', 'journals')
 
-
-class CalendarSerializer(serializers.ModelSerializer):
-    journals = JournalSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Calendar
-        fields = ('id', 'name', 'journals')
+    def update(self, instance, validated_data):
+        if "file" in self.initial_data:
+            file = self.initial_data.get("file")
+            instance.cal_image.save(file.name, file, save=True)
+            return instance
+        return super().update(instance, validated_data)
