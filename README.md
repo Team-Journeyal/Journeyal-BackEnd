@@ -1,6 +1,6 @@
 # Journeyal-BackEnd
 
-# Link to Production Application
+### Link to Production Application
 https://journeyal-webservice.onrender.com/
 
 **All requests, except registration and log in, require authentication**
@@ -9,7 +9,7 @@ Requests to endpoints requiring authentication should set the `Authorization` he
 
 POST requests with a body should set the `Content-Type` header to `application/json`.
 
-# URLS
+## URLS
 | URL	| Description | Possible request |
 | -----|-----|-----| 
 | BASE_URL/auth/users/| register a new user | POST |
@@ -70,6 +70,7 @@ POST  <BASE_URL>/auth/token/login/
 ```
 
 ### response:
+200 OK
 ```json
 {
   "auth_token": "c312049c7f034a3d1b52eabc2040b46e094ff34c"
@@ -87,6 +88,7 @@ POST  <BASE_URL>/auth/token/logout/
 
 
 #### response:
+204 NO CONTENT
 ```json
 "No body returned for response"
 ```
@@ -101,6 +103,7 @@ Authentication required.
 GET  <BASE_URL>/calendar/
 
 #### response:
+200 OK
 ```json
 [
 	{
@@ -217,9 +220,9 @@ Authentication Required.
 PATCH  <BASE_URL>/calendar/<int:pk>/
 
 * Binary File should be selected in first drop down > choose file to upload.
-* Headers:
+* Headers have two lines of input:
 - Content-Type | image/jpeg 
-- Content-Disposition | attachment; nameofyourfile.jpeg
+- Content-Disposition | attachment; nameofyourfile.jpg
 
 
 #### response:
@@ -243,7 +246,5 @@ DELETE  <BASE_URL>/calendar/<int:pk>/
 #### response:
 204 NO CONTENT
 ```json
-{
 "No body returned for response"
-}
 ```

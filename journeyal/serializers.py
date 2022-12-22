@@ -35,12 +35,14 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
     class Meta:
         model = Journal
         fields = ('id', 'date', 'entry', 'event', 'calendar', 'tags', 'journal_images', 'uploaded_images')
-    def create(self, validated_data):
-        uploaded_images = validated_data.pop('uploaded_images')
-        journal = Journal.objects.create(**validated_data)
-        for image in uploaded_images:
-            JournalImage.objects.create(journal=journal, image=image)
-        return journal
+    
+    # def create(self, validated_data):
+    #     uploaded_images = validated_data.pop('uploaded_images')
+    #     journal = Journal.objects.create(**validated_data)
+    #     for image in uploaded_images:
+    #         JournalImage.objects.create(journal=journal, image=image)
+    #     return journal
+
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop('uploaded_images', None)
         if uploaded_images:
