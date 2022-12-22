@@ -18,6 +18,7 @@ django-storages = "*"
 pillow = "*"
 django-taggit = "*"
 django-filter = "*"
+django-extensions = "*"
 
 [dev-packages]
 flake8 = "*"

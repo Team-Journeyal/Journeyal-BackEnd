@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'journeyal',
     'taggit',
     'django_filters',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
