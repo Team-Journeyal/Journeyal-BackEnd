@@ -46,6 +46,6 @@ class Follow(models.Model):
     pass
 
 
-# class JournalImage(models.Model):
-#     journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='journal_images')
-#     image = models.ImageField(upload_to="journal_images", blank=True, null=True)
+class JournalImage(models.Model):
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='journal_images')
+    image = models.ImageField(upload_to="journal_images", blank=True, null=True)

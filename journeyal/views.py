@@ -1,7 +1,8 @@
-from rest_framework import generics, parsers, filters
+from rest_framework import generics, parsers, filters, status
 from .models import User, Calendar, Journal
 from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, TaggitSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -39,12 +40,20 @@ class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
 class JournalView(generics.ListCreateAPIView):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
+    # parser_classes = [parsers.MultiPartParser, parsers.FormParser]
     permission_classes = []
     filter_backends = [filters.SearchFilter]
     search_fields = ['tags__name']
-
     def save(self, commit=True):
         instance = Journal.objects.tags
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except KeyError:
+            error_data = {
+                "error": "Please upload an image."
+            }
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JournalDetail(generics.RetrieveUpdateDestroyAPIView):
