@@ -31,7 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
 
     class Meta:
         model = Journal
