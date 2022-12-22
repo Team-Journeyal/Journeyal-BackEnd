@@ -3,6 +3,7 @@ from .models import User, Calendar, Journal
 from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, TaggitSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from datetime import timedelta, timezone, date
 
 # Create your views here.
 
@@ -44,8 +45,7 @@ class JournalView(generics.ListCreateAPIView):
     permission_classes = []
     filter_backends = [filters.SearchFilter]
     search_fields = ['tags__name']
-    def save(self, commit=True):
-        instance = Journal.objects.tags
+
     def create(self, request, *args, **kwargs):
         try:
             return super().create(request, *args, **kwargs)
@@ -83,3 +83,107 @@ class CalCoverImageView(generics.UpdateAPIView):
 #     serializer_class = ImageSerializer
 #     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 #     permission_classes = [IsAuthenticated]
+
+
+class YearInReviewView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+    queryset = Journal.objects.filter(date__iso_year=2022)
+
+
+class JanFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='1',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class FebFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='2',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['date']
+
+
+class MarFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='3',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class AprFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='4',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class MayFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='5',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class JunFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='6',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class JulFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='7',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class AugFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='8',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class SepFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='9',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class OctFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='10',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class NovFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='11',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
+
+
+class DecFilter(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Journal.objects.filter(date__year='2022', date__month='12',)
+    serializer_class = JournalSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['date']
