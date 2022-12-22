@@ -57,7 +57,7 @@ class CalendarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Calendar
-        fields = ('id', 'name', 'journals')
+        fields = ('id', 'name', 'cal_image', 'journals')
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
