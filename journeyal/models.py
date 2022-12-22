@@ -18,6 +18,7 @@ class Calendar(models.Model):
     name = models.CharField(max_length=50)
     cal_image = models.ImageField(
         upload_to="cal_covers", blank=True, null=True)
+    theme = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return str(self.name)
@@ -29,10 +30,8 @@ class Journal(models.Model):
     date = models.DateField()
     entry = models.TextField(null=True, blank=True)
     event = models.CharField(max_length=200, null=True, blank=True)
-
-    # image = models.ImageField(null=True, blank=True)
     tags = TaggableManager(blank=True)
-# stickers =
+
 
 
 def __str__(self):
@@ -47,6 +46,6 @@ class Follow(models.Model):
     pass
 
 
-# class Image(models.Model):
-#     journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='images')
-#     journal_image = models.ImageField(upload_to="journal_images", blank=True, null=True)
+# class JournalImage(models.Model):
+#     journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='journal_images')
+#     image = models.ImageField(upload_to="journal_images", blank=True, null=True)
