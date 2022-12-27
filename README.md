@@ -217,7 +217,7 @@ PATCH  <BASE_URL>/calendar/<int:pk>/
 #### request:
 Authentication Required. 
 
-PATCH  <BASE_URL>/calendar/<int:pk>/
+PATCH  <BASE_URL>/calendar/cover/<int:pk>/
 
 * Binary File should be selected in first drop down > choose file to upload.
 * Headers have two lines of input:
@@ -237,6 +237,175 @@ PATCH  <BASE_URL>/calendar/<int:pk>/
 ```
 
 ### Delete Calendar:
+
+#### request:
+Authentication Required. 
+
+DELETE  <BASE_URL>/calendar/<int:pk>/
+
+#### response:
+204 NO CONTENT
+```json
+"No body returned for response"
+```
+
+____________________________________________________
+## Journal Endpoints
+
+### List all Journals:
+
+#### request:
+Authentication required.
+
+GET  <BASE_URL>/journal/
+
+#### response:
+200 OK
+```json
+[
+	{
+		"id": 1,
+		"date": "2020-10-10",
+		"entry": null,
+		"event": null,
+		"calendar": 1,
+		"tags": [],
+		"journal_images": []
+	},
+	{
+		"id": 3,
+		"date": "2020-10-10",
+		"entry": null,
+		"event": null,
+		"calendar": 1,
+		"tags": [
+			"momentum",
+			"code"
+		],
+		"journal_images": [
+			{
+				"id": 1,
+				"image": "http://127.0.0.1:8000/media/journal_images/1hector_cwD6hmQ.jpeg"
+            }
+            ]
+	}
+]
+```
+
+### Create Journal: 
+
+#### request:
+Authentication Required. 
+Date and Calendar are required fields. 
+(***Images cannot be added as POST only  as a PATCH)
+
+POST  <BASE_URL>/journal/
+
+* Multipart Form should be selected in first drop down.
+* Headers have one line of input:
+- Content-Type | multipart/form-data
+
+
+```json
+| KEY | VALUE | VALUE TYPE DROP-DOWN |
+| -----|-----|-----| 
+| date | 2020-10-10 | TEXT |
+| calendar | 1 | TEXT |
+| tags | momentum | TEXT |
+| tags | code | TEXT |
+| entry | blahblah | TEXT |
+```
+
+#### response:
+201 CREATED
+```json
+{
+	"id": 17,
+	"date": "2020-10-10",
+	"entry": "blahblah",
+	"event": null,
+	"calendar": 1,
+	"tags": [
+		"momentum",
+		"code"
+	],
+	"journal_images": []
+}
+```
+
+### Get Individual Journal by PK:
+
+#### request:
+Authentication required.
+
+GET <BASE_URL>/journal/<int:pk>/
+
+#### response:
+200 OK
+```json
+{
+	"id": 17,
+	"date": "2020-10-10",
+	"entry": "blahblah",
+	"event": null,
+	"calendar": 1,
+	"tags": [
+		"momentum",
+		"code"
+	],
+	"journal_images": []
+}
+```
+
+### Edit Journal / Upload Image to Journal:
+
+#### request:
+Authentication Required.
+
+PATCH  <BASE_URL>/journal/<int:pk>/
+
+* Multipart Form should be selected in first drop down.
+* Headers have one line of input:
+- Content-Type | multipart/form-data
+
+
+```json
+| KEY | VALUE | VALUE TYPE DROP-DOWN |
+| -----|-----|-----| 
+| tags | edit | TEXT |
+| tags | new | TEXT |
+| entry | I'm editing this entry! | TEXT |
+| uploaded_images | <choose your file> | FILE |
+| uploaded_images | <choose your file> | FILE |
+```
+
+#### response:
+201 CREATED
+```json
+{
+	"id": 17,
+	"date": "2020-10-10",
+	"entry": "I'm editing this entry!",
+	"event": null,
+	"calendar": 1,
+	"tags": [
+        "edit",
+        "new"
+	],
+	"journal_images": [
+		{
+			"id": 15,
+			"image": "https://frostybucket1.s3.amazonaws.com/journal_images/hector_82uTsDF.jpg"
+		},
+		{
+			"id": 16,
+			"image": "https://frostybucket1.s3.amazonaws.com/journal_images/bernine_82uTsDF.jpg"
+		}
+	]
+}
+```
+
+### Delete Journal:
 
 #### request:
 Authentication Required. 
