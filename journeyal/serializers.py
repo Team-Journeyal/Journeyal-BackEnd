@@ -6,7 +6,7 @@ from taggit.serializers import (TagListSerializerField, TaggitSerializer)
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'name', 'avatar')
+        fields = ('id', 'name', 'avatar', 'username')
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
@@ -25,6 +25,7 @@ class JournalImageSerializer(serializers.ModelSerializer):
 
 class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField(required=False)
+    user = serializers.SlugRelatedField(read_only=True, slug_field='username')
     journal_images = JournalImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
         child=serializers.ImageField(max_length=1000000, allow_empty_file=True, use_url=False), 
@@ -34,7 +35,7 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
     
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'entry', 'event', 'calendar', 'tags', 'journal_images', 'uploaded_images')
+        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags', 'journal_images', 'uploaded_images')
     
     # def create(self, validated_data):
     #     uploaded_images = validated_data.pop('uploaded_images')
@@ -56,10 +57,11 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class CalendarSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
-
+    owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    # users = UserSerializer(many=True, read_only=True)
     class Meta:
         model = Calendar
-        fields = ('id', 'name', 'cal_image', 'journals')
+        fields = ('id', 'owner', 'users', 'name', 'cal_image', 'journals')
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
