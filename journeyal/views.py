@@ -45,10 +45,10 @@ class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class JournalNewView(generics.ListCreateAPIView):
     queryset = Journal.objects.all()
-    serializer_class = CalendarSerializer, JournalSerializer
+    serializer_class = JournalSerializer
     
     def get_queryset(self):
-        return Calendar.objects.get(Q(users) | Q(calendars__owner=True))
+        return Journal.objects.filter(calendar__owner=self.request.user)
 
 ###########################################################################
 

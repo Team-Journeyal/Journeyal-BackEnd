@@ -13,7 +13,7 @@ class User(AbstractUser):
 
 
 class Calendar(models.Model):
-    users = models.ManyToManyField(User, related_name='user', blank=True)
+    users = models.ManyToManyField(User, related_name='user', blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='calendars')
     name = models.CharField(max_length=50)
     cal_image = models.ImageField(
