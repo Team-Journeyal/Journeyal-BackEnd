@@ -48,7 +48,7 @@ class JournalNewView(generics.ListCreateAPIView):
     serializer_class = JournalSerializer
     
     def get_queryset(self):
-        return Journal.objects.filter(calendar__owner=self.request.user)
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
 ###########################################################################
 
