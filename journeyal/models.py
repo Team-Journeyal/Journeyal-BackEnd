@@ -50,3 +50,7 @@ class Follow(models.Model):
 class JournalImage(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='journal_images')
     image = models.ImageField(upload_to="journal_images", blank=True, null=True)
+
+class JournalFile(models.Model):
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='journal_files')
+    file = models.FileField(upload_to="journal_files", blank=True, null=True)
