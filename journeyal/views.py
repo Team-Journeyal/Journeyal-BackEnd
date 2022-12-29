@@ -20,6 +20,14 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = []
 
 
+class UserSearch(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = []
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username']
+
+
 class CalendarView(generics.ListCreateAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
@@ -49,14 +57,14 @@ class JournalView(generics.ListCreateAPIView):
     def save(self, commit=True):
         instance = Journal.objects.tags
 
-    # def create(self, request, *args, **kwargs):
-    #     try:
-    #         return super().create(request, *args, **kwargs)
-    #     except KeyError:
-    #         error_data = {
-    #             "error": "Please upload an image."
-    #         }
-    #         return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except KeyError:
+            error_data = {
+                "error": "Please upload an image."
+            }
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JournalDetail(generics.RetrieveUpdateDestroyAPIView):
