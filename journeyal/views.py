@@ -20,19 +20,13 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = []
 
 
-class CalendarCreateView(generics.CreateAPIView):
+class CalendarListCreateView(generics.ListCreateAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
     permission_classes = []
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-
-class CalendarListView(generics.ListAPIView):
-    queryset = Calendar.objects.all()
-    serializer_class = CalendarSerializer
-    permission_classes = []
 
     def get_queryset(self):
         return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user))
@@ -115,6 +109,9 @@ class YearInReviewView(generics.ListAPIView):
     ordering = ['date']
     queryset = Journal.objects.filter(date__iso_year=2022)
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class JanFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -122,6 +119,9 @@ class JanFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
 
 class FebFilter(generics.ListAPIView):
@@ -131,6 +131,9 @@ class FebFilter(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['date']
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class MarFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -138,6 +141,9 @@ class MarFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
 
 class AprFilter(generics.ListAPIView):
@@ -147,6 +153,9 @@ class AprFilter(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class MayFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -154,6 +163,9 @@ class MayFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
 
 class JunFilter(generics.ListAPIView):
@@ -163,6 +175,9 @@ class JunFilter(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class JulFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -170,6 +185,9 @@ class JulFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
 
 class AugFilter(generics.ListAPIView):
@@ -179,6 +197,9 @@ class AugFilter(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class SepFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -186,6 +207,9 @@ class SepFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
 
 class OctFilter(generics.ListAPIView):
@@ -195,6 +219,9 @@ class OctFilter(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class NovFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -203,6 +230,9 @@ class NovFilter(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
 
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
 
 class DecFilter(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -210,3 +240,6 @@ class DecFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
