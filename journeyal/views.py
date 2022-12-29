@@ -41,16 +41,6 @@ class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CalendarSerializer
     permission_classes = []
 
-###########################################################################
-
-class JournalNewView(generics.ListCreateAPIView):
-    queryset = Journal.objects.all()
-    serializer_class = JournalSerializer
-    
-    def get_queryset(self):
-        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
-
-###########################################################################
 
 class JournalView(generics.ListCreateAPIView):
     queryset = Journal.objects.all()
@@ -64,7 +54,7 @@ class JournalView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        return Journal.objects.filter()
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
     
     def save(self, commit=True):
         instance = Journal.objects.tags
