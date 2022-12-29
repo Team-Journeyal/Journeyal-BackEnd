@@ -16,11 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
         # this call to super is to make sure that update still works for other fields
         return super().update(instance, validated_data)
 
+
 class JournalImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = JournalImage
-        fields = ['id','image']
-
+        fields = ['id', 'image']
 
 
 class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -28,15 +28,17 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
     user = serializers.SlugRelatedField(read_only=True, slug_field='username')
     journal_images = JournalImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
-        child=serializers.ImageField(max_length=1000000, allow_empty_file=True, use_url=False), 
+        child=serializers.ImageField(
+            max_length=1000000, allow_empty_file=True, use_url=False),
         write_only=True,
         required=False
     )
-    
+
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags', 'journal_images', 'uploaded_images')
-    
+        fields = ('id', 'date', 'entry', 'event', 'calendar',
+                  'tags', 'journal_images', 'uploaded_images', 'user')
+
     # def create(self, validated_data):
     #     uploaded_images = validated_data.pop('uploaded_images')
     #     journal = Journal.objects.create(**validated_data)
@@ -48,7 +50,8 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
         uploaded_images = validated_data.pop('uploaded_images', None)
         if uploaded_images:
             # self.clear_existing_images(instance) # if we want to clear existing images.
-            journal_image_model_instance = [JournalImage(journal=instance, image=image) for image in uploaded_images]
+            journal_image_model_instance = [JournalImage(
+                journal=instance, image=image) for image in uploaded_images]
             JournalImage.objects.bulk_create(
                 journal_image_model_instance
             )
@@ -59,6 +62,7 @@ class CalendarSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
     owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # users = UserSerializer(many=True, read_only=True)
+
     class Meta:
         model = Calendar
         fields = ('id', 'owner', 'users', 'name', 'cal_image', 'journals')
