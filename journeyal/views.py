@@ -3,7 +3,7 @@ from .models import User, Calendar, Journal
 from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, TaggitSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from datetime import timedelta, timezone, date
+from django.db.models import Q
 
 # Create your views here.
 
@@ -20,24 +20,22 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = []
 
 
-class UserSearch(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class CalendarCreateView(generics.CreateAPIView):
+    queryset = Calendar.objects.all()
+    serializer_class = CalendarSerializer
     permission_classes = []
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['username']
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
-class CalendarView(generics.ListCreateAPIView):
+class CalendarListView(generics.ListAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
     permission_classes = []
 
     def get_queryset(self):
-        return Calendar.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user))
 
 
 class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -54,17 +52,23 @@ class JournalView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['tags__name']
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
+
     def save(self, commit=True):
         instance = Journal.objects.tags
 
-    def create(self, request, *args, **kwargs):
-        try:
-            return super().create(request, *args, **kwargs)
-        except KeyError:
-            error_data = {
-                "error": "Please upload an image."
-            }
-            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+    # def create(self, request, *args, **kwargs):
+    #     try:
+    #         return super().create(request, *args, **kwargs)
+    #     except KeyError:
+    #         error_data = {
+    #             "error": "Please upload an image."
+    #         }
+    #         return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JournalDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -81,6 +85,14 @@ class UserAvatarView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserSearch(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = []
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username']
 
 
 class CalCoverImageView(generics.UpdateAPIView):
