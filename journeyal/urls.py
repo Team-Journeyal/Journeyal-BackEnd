@@ -28,6 +28,8 @@ urlpatterns = [
     path('journal/Oct', views.OctFilter.as_view(), name='MonthInReview'),
     path('journal/Nov', views.NovFilter.as_view(), name='MonthInReview'),
     path('journal/Dec', views.DecFilter.as_view(), name='MonthInReview'),
+    path('journal/Aug', views.AugFilter.as_view(), name='MonthInReview'),
+    path('journal/Sep', views.SepFilter.as_view(), name='MonthInReview'),
 ]
 
 if settings.DEBUG:
