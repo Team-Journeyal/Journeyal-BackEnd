@@ -245,6 +245,3 @@ class DecFilter(generics.ListAPIView):
     def get_queryset(self):
         return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user))
 
-
-def get_queryset(self):
-    return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user))
