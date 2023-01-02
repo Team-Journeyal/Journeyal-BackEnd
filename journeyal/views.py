@@ -36,7 +36,7 @@ class CalendarListCreateView(generics.ListCreateAPIView):
 class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated]
 
 
 class JournalView(generics.ListCreateAPIView):

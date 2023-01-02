@@ -22,6 +22,7 @@ class JournalImageSerializer(serializers.ModelSerializer):
         model = JournalImage
         fields = ['id', 'image']
 
+
 class JournalFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = JournalFile
@@ -42,7 +43,8 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags', 'journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
+        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags',
+                  'journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
 
     # def create(self, validated_data):
     #     uploaded_images = validated_data.pop('uploaded_images')
@@ -77,7 +79,8 @@ class CalendarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Calendar
-        fields = ('id', 'owner', 'users', 'name', 'cal_image', 'theme', 'journals')
+        fields = ('id', 'owner', 'users', 'name',
+                  'cal_image', 'theme', 'journals',)
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
