@@ -4,6 +4,7 @@ from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
+from .permissions import IsOwner
 
 # Create your views here.
 
@@ -11,19 +12,19 @@ from django.db.models import Q
 class UserView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
 
 class CalendarListCreateView(generics.ListCreateAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated, IsOwner]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -35,14 +36,14 @@ class CalendarListCreateView(generics.ListCreateAPIView):
 class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated, IsOwner]
 
 
 class JournalView(generics.ListCreateAPIView):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
     # parser_classes = [parsers.MultiPartParser, parsers.FormParser]
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['tags__name']
 
@@ -68,7 +69,7 @@ class JournalView(generics.ListCreateAPIView):
 class JournalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
 
 class UserAvatarView(generics.UpdateAPIView):
@@ -84,7 +85,7 @@ class UserAvatarView(generics.UpdateAPIView):
 class UserSearch(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
 
@@ -246,4 +247,4 @@ class DecFilter(generics.ListAPIView):
 
 
 def get_queryset(self):
-        return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user))
+    return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user))
