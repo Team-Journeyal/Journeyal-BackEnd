@@ -25,7 +25,7 @@ class CalendarListCreateView(generics.ListCreateAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
     filter_backends = [filters.OrderingFilter]
-    ordering = []
+    ordering = ['name']
     permission_classes = [IsAuthenticated, IsOwner]
 
     def perform_create(self, serializer):
