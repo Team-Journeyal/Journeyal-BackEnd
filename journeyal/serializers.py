@@ -51,11 +51,11 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
             uploaded_images = validated_data.pop('uploaded_images')
             journal = Journal.objects.create(**validated_data)
             for image in uploaded_images:
-                breakpoint()
+                # breakpoint()
                 JournalImage.objects.create(journal=journal, image=image)
         else:
             journal = Journal.objects.create(**validated_data)
-        return super().save(validated_data)
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop('uploaded_images', None)
