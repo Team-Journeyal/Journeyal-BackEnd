@@ -1,6 +1,6 @@
 from rest_framework import generics, parsers, filters, status
 from .models import User, Calendar, Journal
-from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, TaggitSerializer
+from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, CalendarUsernameSerializer, TaggitSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
@@ -32,13 +32,23 @@ class CalendarListCreateView(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user))
+        return Calendar.objects.filter(Q(users=self.request.user) | Q(owner=self.request.user)).distinct()
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CalendarUsernameSerializer
+        return self.serializer_class
 
 
 class CalendarDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CalendarUsernameSerializer
+        return self.serializer_class
 
 
 class JournalView(generics.ListCreateAPIView):

@@ -71,16 +71,24 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
             )
         return super().update(instance, validated_data)
 
-
-class CalendarSerializer(serializers.ModelSerializer):
+class CalendarUsernameSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
-    owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    # users = UserSerializer(many=True, read_only=True)
+    owner = serializers.SlugRelatedField(slug_field="username", many=False, read_only=True)
+    users = serializers.SlugRelatedField(slug_field="username", many=True, read_only=True)
 
     class Meta:
         model = Calendar
-        fields = ('id', 'owner', 'users', 'name',
-                  'cal_image', 'theme', 'journals',)
+        fields = ('id', 'owner', 'users', 'name','cal_image', 'created_at', 'theme', 'journals',)
+
+
+class CalendarSerializer(serializers.ModelSerializer):
+    journals = JournalSerializer(many=True, read_only=True)
+    owner = serializers.SlugRelatedField(slug_field="username", many=False, read_only=True)
+    
+
+    class Meta:
+        model = Calendar
+        fields = ('id', 'owner', 'users', 'name', 'cal_image', 'created_at', 'theme', 'journals',)
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
