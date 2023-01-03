@@ -7,18 +7,23 @@ from taggit.managers import TaggableManager
 class User(AbstractUser):
     name = models.CharField(max_length=50, null=True, blank=True)
     avatar = models.ImageField(upload_to="user_avatars", blank=True, null=True)
+    color = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.username
 
 
 class Calendar(models.Model):
-    users = models.ManyToManyField(User, related_name='user', blank=True, null=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='calendars')
+    users = models.ManyToManyField(User, related_name='user_calendars', blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_calendars')
     name = models.CharField(max_length=50)
     cal_image = models.ImageField(
         upload_to="cal_covers", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     theme = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        ordering = ['created_at']
 
     def __str__(self):
         return str(self.name)
