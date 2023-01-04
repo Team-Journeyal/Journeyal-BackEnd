@@ -43,16 +43,19 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags',
-                  'journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
+        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags','journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
 
-    # def create(self, validated_data):
-    #     uploaded_images = validated_data.pop('uploaded_images')
-    #     journal = Journal.objects.create(**validated_data)
-    #     for image in uploaded_images:
-    #         JournalImage.objects.create(journal=journal, image=image)
-    #     return journal
-
+    def create(self, validated_data):
+        if 'uploaded_images' in validated_data.keys():
+            uploaded_images = validated_data.pop('uploaded_images')
+            journal = super().create(validated_data)
+            for image in uploaded_images:
+                JournalImage.objects.create(journal=journal, image=image)
+            return journal
+        
+        else:
+            return super().create(validated_data)
+        
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop('uploaded_images', None)
         uploaded_files = validated_data.pop('uploaded_files', None)
@@ -70,6 +73,7 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
                 journal_file_model_instance
             )
         return super().update(instance, validated_data)
+
 
 class CalendarUsernameSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
