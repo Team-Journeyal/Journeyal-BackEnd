@@ -74,7 +74,7 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 class CalendarUsernameSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
     owner = serializers.SlugRelatedField(slug_field="username", many=False, read_only=True)
-    users = serializers.SlugRelatedField(slug_field="username", many=True, read_only=True)
+    users = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Calendar
