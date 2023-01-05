@@ -46,16 +46,13 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags','journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
 
     def create(self, validated_data):
-        if 'uploaded_images' or 'uploaded_files' in validated_data.key():
+        if 'uploaded_images' in validated_data.keys():
             uploaded_images = validated_data.pop('uploaded_images')
-            uploaded_files = validated_data.pop('uploaded_files')
             journal = super().create(validated_data)
             for image in uploaded_images:
                 JournalImage.objects.create(journal=journal, image=image)
-            for file in uploaded_files:
-                JournalFile.objects.create(journal=journal, file=file)
             return journal
-        
+
         else:
             return super().create(validated_data)
         
