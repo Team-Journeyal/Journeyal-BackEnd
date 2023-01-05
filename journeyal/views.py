@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
 from .permissions import IsOwner
+from datetime import date, timedelta
 
 # Create your views here.
 
@@ -107,13 +108,6 @@ class CalCoverImageView(generics.UpdateAPIView):
     serializer_class = CalendarSerializer
     parser_classes = [parsers.FileUploadParser]
     permission_classes = [IsAuthenticated]
-
-# class JournalImageView(generics.UpdateAPIView):
-#     queryset = Image.objects.all()
-#     serializer_class = ImageSerializer
-#     parser_classes = [parsers.MultiPartParser, parsers.FormParser]
-#     permission_classes = [IsAuthenticated]
-
 
 class YearInReviewView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -243,3 +237,15 @@ class DecFilter(generics.ListAPIView):
 
     def get_queryset(self):
         return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='12') | Q(calendar__owner=self.request.user, date__year='2022', date__month='12')).distinct()
+
+
+class ThisDayAYearAgoView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JournalSerializer
+
+    def get_queryset(self):
+        todaysdate = date.today()
+        datepast = todaysdate - timedelta(days=365)
+        calendar_query = Calendar.objects.filter(journals__in=self.request.user.journals.all())
+        queryset = Journal.objects.filter(date=datepast).filter(calendar__in=calendar_query)
+        return queryset
