@@ -23,8 +23,20 @@ POST requests with a body should set the `Content-Type` header to `application/j
 | BASE_URL/calendar/cover/<int:pk>/ | edit calendar to add cover image | PATCH |
 | BASE_URL/journal/ | list all journals, create a journal | GET, POST |
 | BASE_URL/journal/<int:pk>/ | get, edit, or delete a single journal | GET, PATCH, DELETE |
-
-
+| BASE_URL/365/ | get journal entries in the current calendar from a year ago | GET |
+| BASE_URL/journal/YIR/ | get journal entries for an entire year | GET |
+| BASE_URL/journal/Jan/ | get journal entries for the month of January | GET |
+| BASE_URL/journal/Feb/ | get journal entries for the month of February | GET |
+| BASE_URL/journal/Mar/ | get journal entries for the month of March | GET |
+| BASE_URL/journal/Apr/ | get journal entries for the month of April | GET |
+| BASE_URL/journal/May/ | get journal entries for the month of May | GET |
+| BASE_URL/journal/Jun/ | get journal entries for the month of June | GET |
+| BASE_URL/journal/Jul/ | get journal entries for the month of July | GET |
+| BASE_URL/journal/Aug/ | get journal entries for the month of August | GET |
+| BASE_URL/journal/Sep/ | get journal entries for the month of September | GET |
+| BASE_URL/journal/Oct/ | get journal entries for the month of October | GET |
+| BASE_URL/journal/Nov/ | get journal entries for the month of November | GET |
+| BASE_URL/journal/Dec/ | get journal entries for the month of December | GET |
 
 ## User Authentication Endpoints
 
