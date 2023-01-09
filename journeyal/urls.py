@@ -31,9 +31,7 @@ urlpatterns = [
     path('journal/Oct/', views.OctFilter.as_view(), name='MonthInReview'),
     path('journal/Nov/', views.NovFilter.as_view(), name='MonthInReview'),
     path('journal/Dec/', views.DecFilter.as_view(), name='MonthInReview'),
-    path('JanRev/', views.JanRev.as_view(), name='JanReview'),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
