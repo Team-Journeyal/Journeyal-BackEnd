@@ -1,12 +1,11 @@
 from rest_framework import generics, parsers, filters, status
 from .models import User, Calendar, Journal
-from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, CalendarUsernameSerializer, TaggitSerializer, TagListSerializerField
+from .serializers import UserSerializer, CalendarSerializer, JournalSerializer, CalendarUsernameSerializer, TaggitSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.db.models import Q, Count, Aggregate, Avg
+from django.db.models import Q
 from .permissions import IsOwner
 from datetime import date, timedelta
-from itertools import chain
 
 # Create your views here.
 
@@ -65,14 +64,7 @@ class JournalView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        return q
-
-    # def get_queryset(self):
-    #     return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user)).distinct()
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user)).distinct()
 
     def save(self, commit=True):
         instance = Journal.objects.tags
@@ -117,7 +109,6 @@ class CalCoverImageView(generics.UpdateAPIView):
     parser_classes = [parsers.FileUploadParser]
     permission_classes = [IsAuthenticated]
 
-
 class YearInReviewView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = JournalSerializer
@@ -125,12 +116,7 @@ class YearInReviewView(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__iso_year='2022')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__iso_year='2022') | Q(calendar__owner=self.request.user, date__iso_year='2022')).distinct()
 
 
 class JanFilter(generics.ListAPIView):
@@ -140,12 +126,7 @@ class JanFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='1')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='01') | Q(calendar__owner=self.request.user, date__year='2022', date__month='01')).distinct()
 
 
 class FebFilter(generics.ListAPIView):
@@ -155,12 +136,7 @@ class FebFilter(generics.ListAPIView):
     ordering_fields = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='2')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='02') | Q(calendar__owner=self.request.user, date__year='2022', date__month='02')).distinct()
 
 
 class MarFilter(generics.ListAPIView):
@@ -170,12 +146,7 @@ class MarFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='3')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='03') | Q(calendar__owner=self.request.user, date__year='2022', date__month='03')).distinct()
 
 
 class AprFilter(generics.ListAPIView):
@@ -185,12 +156,7 @@ class AprFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='4')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='04') | Q(calendar__owner=self.request.user, date__year='2022', date__month='04')).distinct()
 
 
 class MayFilter(generics.ListAPIView):
@@ -200,12 +166,7 @@ class MayFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='5')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='05') | Q(calendar__owner=self.request.user, date__year='2022', date__month='05')).distinct()
 
 
 class JunFilter(generics.ListAPIView):
@@ -215,12 +176,7 @@ class JunFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='6')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='06') | Q(calendar__owner=self.request.user, date__year='2022', date__month='06')).distinct()
 
 
 class JulFilter(generics.ListAPIView):
@@ -230,12 +186,7 @@ class JulFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='7')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='07') | Q(calendar__owner=self.request.user, date__year='2022', date__month='07')).distinct()
 
 
 class AugFilter(generics.ListAPIView):
@@ -245,12 +196,7 @@ class AugFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='8')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='08') | Q(calendar__owner=self.request.user, date__year='2022', date__month='08')).distinct()
 
 
 class SepFilter(generics.ListAPIView):
@@ -260,12 +206,7 @@ class SepFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='9')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='09') | Q(calendar__owner=self.request.user, date__year='2022', date__month='09')).distinct()
 
 
 class OctFilter(generics.ListAPIView):
@@ -275,12 +216,7 @@ class OctFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='10')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='10') | Q(calendar__owner=self.request.user, date__year='2022', date__month='10')).distinct()
 
 
 class NovFilter(generics.ListAPIView):
@@ -290,12 +226,7 @@ class NovFilter(generics.ListAPIView):
     ordering = ['date']
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='11')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='11') | Q(calendar__owner=self.request.user, date__year='2022', date__month='11')).distinct()
 
 
 class DecFilter(generics.ListAPIView):
@@ -303,15 +234,9 @@ class DecFilter(generics.ListAPIView):
     serializer_class = JournalSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['date']
-    queryset = Journal.objects.all()
 
     def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        q = q.filter(date__year='2022', date__month='12')
-        return q
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id, date__year='2022', date__month='12') | Q(calendar__owner=self.request.user, date__year='2022', date__month='12')).distinct()
 
 
 class ThisDayAYearAgoView(generics.ListAPIView):
@@ -321,44 +246,6 @@ class ThisDayAYearAgoView(generics.ListAPIView):
     def get_queryset(self):
         todaysdate = date.today()
         datepast = todaysdate - timedelta(days=365)
-        calendar_query = Calendar.objects.filter(
-            journals__in=self.request.user.journals.all())
-        queryset = Journal.objects.filter(
-            date=datepast).filter(calendar__in=calendar_query)
+        calendar_query = Calendar.objects.filter(journals__in=self.request.user.journals.all())
+        queryset = Journal.objects.filter(date=datepast).filter(calendar__in=calendar_query)
         return queryset
-
-
-# class JanRev(generics.ListAPIView):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = JournalSerializer
-#     # filter_backends = [filters.OrderingFilter]
-#     # ordering = ['date']
-#     # queryset = Journal.objects.all()
-
-#     def get_queryset(self):
-#         q = Journal.objects.all()
-
-#         return q
-
-    # def get_queryset(self):
-    #     q = Journal.tags.all()
-    #     q = q.annotate(num_times=Count('name'))
-    #     mydict = {}
-    #     for tag in q:
-    #         mydict[tag.name] = tag.num_times
-        # q = Journal.taggit_taggeditem_items.filter(
-        #     calendar__owner__id=self.request.user.id)
-        # q = q.filter(calendar__owner=self.request.user).distinct()
-        # q = q.filter(date__year='2022', date__month='12')
-        # q = q.filter(tags).count()
-
-    # def get_queryset(self):
-    #     q = Journal.objects.all()
-    #     q = Journal.objects.filter(
-    #         calendar__owner__id=self.request.user.id)
-    #     q = q.filter(calendar__owner=self.request.user).distinct()
-    #     q = q.filter(date__year='2022', date__month='12')
-    #     q = q.filter(tags).count()
-    #     return q
-
-    # 'taggit_taggeditem_items' into field. Choices are: calendar, calendar_id, date, entry, event, id, journal_files, journal_images, tagged_items, tags, user, user_id
