@@ -64,15 +64,15 @@ class JournalView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    def get_queryset(self):
-        q = Journal.objects.all()
-        q = Journal.objects.filter(
-            calendar__owner__id=self.request.user.id)
-        q = q.filter(calendar__owner=self.request.user).distinct()
-        return q
-
     # def get_queryset(self):
-    #     return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user)).distinct()
+    #     q = Journal.objects.all()
+    #     q = Journal.objects.filter(
+    #         calendar__owner__id=self.request.user.id)
+    #     q = q.filter(calendar__owner=self.request.user).distinct()
+    #     return q
+
+    def get_queryset(self):
+        return Journal.objects.filter(Q(calendar__users__id=self.request.user.id) | Q(calendar__owner=self.request.user)).distinct()
 
     def save(self, commit=True):
         instance = Journal.objects.tags
