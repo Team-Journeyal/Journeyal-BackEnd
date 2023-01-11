@@ -41,13 +41,11 @@ class Journal(models.Model):
     event = models.CharField(max_length=200, null=True, blank=True)
     tags = TaggableManager(blank=True)
 
+    class meta:
+        ordering = ['date']
 
-class meta:
-    ordering = ['date']
-
-
-def __str__(self):
-    return str(self.date)
+    def __str__(self):
+        return str(self.date)
 
 
 class JournalImage(models.Model):
