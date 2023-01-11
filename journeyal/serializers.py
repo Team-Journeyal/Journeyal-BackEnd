@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Calendar, Journal, JournalImage, JournalFile, Notification, Follow
+from .models import User, Calendar, Journal, JournalImage, JournalFile
 from taggit.serializers import (TagListSerializerField, TaggitSerializer)
 
 
@@ -43,7 +43,8 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Journal
-        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags','journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
+        fields = ('id', 'date', 'user', 'entry', 'event', 'calendar', 'tags',
+                  'journal_images', 'uploaded_images', 'journal_files', 'uploaded_files')
 
     def create(self, validated_data):
         if 'uploaded_images' in validated_data.keys():
@@ -55,7 +56,7 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 
         else:
             return super().create(validated_data)
-        
+
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop('uploaded_images', None)
         uploaded_files = validated_data.pop('uploaded_files', None)
@@ -77,22 +78,25 @@ class JournalSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class CalendarUsernameSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
-    owner = serializers.SlugRelatedField(slug_field="username", many=False, read_only=True)
+    owner = serializers.SlugRelatedField(
+        slug_field="username", many=False, read_only=True)
     users = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Calendar
-        fields = ('id', 'owner', 'users', 'name','cal_image', 'created_at', 'theme', 'journals',)
+        fields = ('id', 'owner', 'users', 'name', 'cal_image',
+                  'created_at', 'theme', 'journals',)
 
 
 class CalendarSerializer(serializers.ModelSerializer):
     journals = JournalSerializer(many=True, read_only=True)
-    owner = serializers.SlugRelatedField(slug_field="username", many=False, read_only=True)
-    
+    owner = serializers.SlugRelatedField(
+        slug_field="username", many=False, read_only=True)
 
     class Meta:
         model = Calendar
-        fields = ('id', 'owner', 'users', 'name', 'cal_image', 'created_at', 'theme', 'journals',)
+        fields = ('id', 'owner', 'users', 'name', 'cal_image',
+                  'created_at', 'theme', 'journals',)
 
     def update(self, instance, validated_data):
         if "file" in self.initial_data:
